@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "543969523571",
+    "firebase_url": "https://cocoatalk-chunsg-default-rtdb.firebaseio.com",
+    "project_id": "cocoatalk-chunsg",
+    "storage_bucket": "cocoatalk-chunsg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543969523571:android:a6fc14bb1c2ff4f01d3706",
+        "android_client_info": {
+          "package_name": "com.samil.cocoatalk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543969523571-2mn82sk0ojtn008divnspb9iadjceh2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQAhOuIJc2T78qb00Bhg101IldM0pHDH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543969523571-2mn82sk0ojtn008divnspb9iadjceh2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543969523571:android:f86c73cb3af032f11d3706",
+        "android_client_info": {
+          "package_name": "com.samil.cocoatalks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543969523571-2mn82sk0ojtn008divnspb9iadjceh2h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQAhOuIJc2T78qb00Bhg101IldM0pHDH0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543969523571-2mn82sk0ojtn008divnspb9iadjceh2h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
