@@ -31,7 +31,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -63,8 +65,8 @@ public class RegisterActivity extends AppCompatActivity {
 
 
                 Intent phoneIntent = getIntent();
-                String memberPhone = phoneIntent.getStringExtra("memberPhone");
-
+                String Phone = phoneIntent.getStringExtra("memberPhone");
+                String memberPhone = makePhoneNum(Phone);
                 String memberID = inputID.getText().toString();
                 String memberPassword = inputPW.getText().toString();
                 String memberName = inputName.getText().toString();
@@ -194,5 +196,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     }
 
+    public static String makePhoneNum(String phoneNum){
+        String regEx = "(\\d{3})(\\d{4})(\\d{4})";
+        if(!Pattern.matches(regEx, phoneNum)) return null;
+        return phoneNum.replaceAll(regEx, "$1-$2-$3");
+    }
 
 }

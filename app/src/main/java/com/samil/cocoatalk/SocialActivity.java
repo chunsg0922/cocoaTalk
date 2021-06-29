@@ -4,15 +4,33 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class SocialActivity extends AppCompatActivity {
     private final int MY_PERMISSION_REQUEST_READ = 1001;
@@ -24,15 +42,9 @@ public class SocialActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social);
 
-        // 컨텐트 프로바이더 (ContentProvider)
-// 어플리케이션 내에서만 사용할 수 있는 데이터를 공유하기위한
-// 방법으로 안드로이드의 4대 컴포넌트 중 하나이다
-
-        // 폰에 저장되있는 전화번호부를 읽어보기(권한 필요)
-        // AndroidManifest.xml
-
         TextView list = (TextView)findViewById(R.id.list);
 
+        // 연락처 읽기를 위한 권한 설정
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
 
@@ -54,6 +66,7 @@ public class SocialActivity extends AppCompatActivity {
             }
         }
 
+        // 연락처 쓰기를 위한 권한 설정
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED){
                 if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_CONTACTS)){
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -75,6 +88,8 @@ public class SocialActivity extends AppCompatActivity {
                 }
 
                 }
+
+        
         Cursor c =  getContentResolver().query(
                 ContactsContract.CommonDataKinds
                         .Phone.CONTENT_URI,  // 조회할 컬럼명
@@ -89,14 +104,42 @@ public class SocialActivity extends AppCompatActivity {
             String name = c.getString
                     (c.getColumnIndex(ContactsContract
                             .CommonDataKinds.Phone.DISPLAY_NAME));
-            String phoneNumber = c.getString
+            String memberphoneNumber = c.getString
                     (c.getColumnIndex(ContactsContract
                             .CommonDataKinds.Phone.NUMBER));
             str += "이름 : " + name
-                    +"폰번호 : " + phoneNumber + "\n";
+                    +"폰번호 : " + memberphoneNumber + "\n";
+
         } while (c.moveToNext());//데이터가 없을 때까지반복
         list.setText(str);
-    } // end of onCreate
-} // end of class
+
+    }
 
 
+}
+
+
+//    Response.Listener<String> responseListener = new Response.Listener<String>() {
+//                @Override
+//                public void onResponse(String response) {
+//                    try{
+//                        JSONObject jsonResponse = new JSONObject(response);
+//                        boolean success = jsonResponse.getBoolean("success");
+//
+//                        if(success){
+//
+//                        } else{
+//                            AlertDialog.Builder builder = new AlertDialog.Builder(SocialActivity.this);
+//                            builder.setMessage("친구 목록 조회에 실패했습니다.")
+//                                    .setNeutralButton("다시 시도", null)
+//                                    .create()
+//                                    .show();
+//                        }
+//                    } catch(Exception e){
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//            ShowListRequest showListRequest = new ShowListRequest(memberphoneNumber,  responseListener);
+//            RequestQueue queue = Volley.newRequestQueue(SocialActivity.this);
+//            queue.add(showListRequest);
