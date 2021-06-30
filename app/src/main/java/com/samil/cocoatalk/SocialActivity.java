@@ -110,7 +110,7 @@ public class SocialActivity extends AppCompatActivity {
             str += "이름 : " + name
                     +"폰번호 : " + memberphoneNumber + "\n";
 
-        } while (c.moveToNext());//데이터가 없을 때까지반복
+        } while (c.moveToNext()); //데이터가 없을 때까지반복
         list.setText(str);
 
     }

@@ -75,7 +75,8 @@
                 android:id="@+id/okRegisterBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="확인" />
+                android:text="확인"
+                app:backgroundTint="@color/color_states_materialbutton" />
 
             <TextView
                 android:id="@+id/asLoginText"

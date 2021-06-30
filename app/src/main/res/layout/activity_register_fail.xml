@@ -58,13 +58,15 @@
                 android:id="@+id/continueBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="계속" />
+                android:text="계속"
+                app:backgroundTint="@color/color_states_materialbutton" />
 
             <Button
                 android:id="@+id/otherBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="다른 전화번호로 인증하기" />
+                android:text="다른 전화번호로 인증하기"
+                app:backgroundTint="@color/color_states_materialbutton" />
 
         </LinearLayout>
 

@@ -157,7 +157,8 @@
                 android:id="@+id/agreeBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="동의하고 계속 진행합니다" />
+                android:text="동의하고 계속 진행합니다"
+                app:backgroundTint="@color/color_states_materialbutton" />
 
             <TextView
                 android:id="@+id/goBackText"

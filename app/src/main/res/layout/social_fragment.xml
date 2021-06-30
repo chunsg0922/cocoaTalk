@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#d1d1d1"
-    tools:context=".ui.home.HomeFragment">
+    tools:context=".ui.social.SocialFragment">
 
     <ListView
         android:id="@+id/memberListView"

@@ -1,5 +1,6 @@
 package com.samil.cocoatalk;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatCheckBox;
 
@@ -21,6 +22,9 @@ public class RegisterAgreementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_agreement);
+
+        ActionBar bar = getSupportActionBar();
+        bar.hide();
 
         Button agreeBtn = (Button)findViewById(R.id.agreeBtn);
         CheckBox allCheck = (CheckBox)findViewById(R.id.allCheckBox);

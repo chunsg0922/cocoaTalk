@@ -1,5 +1,6 @@
 package com.samil.cocoatalk;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,9 @@ public class RegisterSuccessActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_success);
+
+        ActionBar bar = getSupportActionBar();
+        bar.hide();
 
         Button loginMoveBtn = (Button)findViewById(R.id.loginMoveBtn);
 

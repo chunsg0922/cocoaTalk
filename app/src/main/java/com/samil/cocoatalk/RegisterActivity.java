@@ -1,6 +1,7 @@
 package com.samil.cocoatalk;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -43,6 +44,9 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        ActionBar bar = getSupportActionBar();
+        bar.hide();
 
         Button okRegisterBtn = (Button)findViewById(R.id.okRegisterBtn);
         EditText inputID = (EditText)findViewById(R.id.inputID);

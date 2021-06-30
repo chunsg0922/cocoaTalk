@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.samil.cocoatalk">
-
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -17,7 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CocoaTalk"
         android:usesCleartextTraffic="true">
-        <activity android:name=".FriendActivity"></activity>
+        <activity
+            android:name=".TabActivity"
+            android:label=".LoginActivity"></activity>
+        <activity android:name=".FriendActivity" />
         <activity android:name=".SocialActivity" />
         <activity android:name=".FindPwActivity" />
         <activity android:name=".FindIdActivity" />

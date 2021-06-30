@@ -1,6 +1,7 @@
 package com.samil.cocoatalk;
 
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -14,6 +15,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ActionBar bar = getSupportActionBar();
+        bar.hide();
 
         // 핸들러를 통해 MainActivity 2초 출력 후 LoginActivity 화면 전환
         Handler handler = new Handler();

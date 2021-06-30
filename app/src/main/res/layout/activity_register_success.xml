@@ -57,7 +57,8 @@
                 android:id="@+id/loginMoveBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="로그인페이지로 이동" />
+                android:text="로그인페이지로 이동"
+                app:backgroundTint="@color/color_states_materialbutton" />
 
         </LinearLayout>
 

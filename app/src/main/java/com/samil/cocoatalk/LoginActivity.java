@@ -1,10 +1,12 @@
 package com.samil.cocoatalk;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -31,6 +33,9 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ActionBar bar = getSupportActionBar();
+        bar.hide();
+
         EditText editID = (EditText)findViewById(R.id.editID);
         EditText editPasswd = (EditText)findViewById(R.id.editPasswd);
         TextView findMeText = (TextView)findViewById(R.id.findMeText);
@@ -54,9 +59,14 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success){
-//                                Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
-//                                LoginActivity.this.startActivity(intent);
-                                new BackgroundTask().execute();
+                                Intent intent = new Intent(LoginActivity.this, TabActivity.class);
+                                LoginActivity.this.startActivity(intent);
+//                                new BackgroundTask().execute();
+//
+//                                SharedPreferences sf = getSharedPreferences("sFile", MODE_PRIVATE);
+//                                String id = sf.getString("id", "");
+//                                String password = sf.getString("password", "");
+
                             } else{
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                                 builder.setMessage("회원 정보를 잘못 입력하셨습니다.")
@@ -73,7 +83,6 @@ public class LoginActivity extends AppCompatActivity {
                 LoginRequest loginRequest = new LoginRequest(memberID, memberPassword, responseListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
                 queue.add(loginRequest);
-
 
             }
         });
@@ -135,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onPostExecute(String result){
-            Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
+            Intent intent = new Intent(LoginActivity.this, TabActivity.class);
             intent.putExtra("memberList", result);
             LoginActivity.this.startActivity(intent);
         }
@@ -144,5 +153,10 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("sFile",MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+      //  String id =
     }
 }

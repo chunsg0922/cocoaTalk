@@ -1,5 +1,6 @@
 package com.samil.cocoatalk;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,6 +14,9 @@ public class RegisterFailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_fail);
+
+        ActionBar bar = getSupportActionBar();
+        bar.hide();
 
         Button continueBtn = (Button)findViewById(R.id.continueBtn);
         Button otherBtn = (Button)findViewById(R.id.otherBtn);

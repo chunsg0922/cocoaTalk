@@ -61,13 +61,15 @@
                 android:id="@+id/smsBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="인증번호 발송" />
+                android:text="인증번호 발송"
+                app:backgroundTint="@color/color_states_materialbutton" />
 
             <Button
                 android:id="@+id/okBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="확인" />
+                android:text="확인"
+                app:backgroundTint="@color/color_states_materialbutton" />
 
             <TextView
                 android:id="@+id/goBackText"
