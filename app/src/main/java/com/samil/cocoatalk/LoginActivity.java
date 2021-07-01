@@ -6,18 +6,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.TabActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
@@ -51,40 +49,19 @@ public class LoginActivity extends AppCompatActivity {
                 String memberID = editID.getText().toString();
                 String memberPassword = editPasswd.getText().toString();
 
-                // 서버측에 보낸 요청에 대한 응답을 받는 리스너 실행
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try{
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
+                if(memberID.equals("") || memberPassword.equals("")){
 
-                            if(success){
-                                //Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
-                               // LoginActivity.this.startActivity(intent);
-                                new BackgroundTask().execute();
-//
-//                                SharedPreferences sf = getSharedPreferences("sFile", MODE_PRIVATE);
-//                                String id = sf.getString("id", "");
-//                                String password = sf.getString("password", "");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, R.style.myTheme).setTitle("알림").setMessage("아이디와 비밀번호를 입력해주세요.")
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
 
-                            } else{
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("회원 정보를 잘못 입력하셨습니다.")
-                                        .setNegativeButton("다시 시도", null)
-                                        .create().show();
-                            }
-                        } catch (Exception e){
-                            e.printStackTrace();
-                        }
-                    }
-                };
+                                }
+                            });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
 
-                // 서버 측에 보내는 Request객체 선언 및 실행
-                LoginRequest loginRequest = new LoginRequest(memberID, memberPassword, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
-
+                }
             }
         });
 
@@ -108,48 +85,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    class BackgroundTask extends AsyncTask<Void, Void, String>{
-        String target;
-
-        @Override
-        protected  void onPreExecute(){
-            target = "http://chunsg0922.cafe24.com/List.php";
-        }
-
-        @Override
-        protected String doInBackground(Void... voids){
-            try{
-                URL url = new URL(target);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-                String temp;
-                StringBuilder stringBuilder = new StringBuilder();
-                while((temp = bufferedReader.readLine()) != null){
-                    stringBuilder.append(temp + "\n");
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return stringBuilder.toString().trim();
-            } catch(Exception e){
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        public void onProgressUpdate(Void... values){
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        public void onPostExecute(String result){
-            Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
-            intent.putExtra("memberList", result);
-            LoginActivity.this.startActivity(intent);
-        }
-    }
     // 화면 중지
     @Override
     protected void onStop(){
@@ -157,7 +92,5 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences sharedPreferences = getSharedPreferences("sFile",MODE_PRIVATE);
 
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-      //  String id =
     }
 }

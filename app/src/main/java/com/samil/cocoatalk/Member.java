@@ -1,10 +1,9 @@
 package com.samil.cocoatalk;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Member {
 
+    private String memberUid;
     private String memberID;
     private String memberPassword;
     private String memberName;
@@ -23,6 +22,14 @@ public class Member {
         this.memberPhone = memberPhone;
         this.memberImg = memberImg;
         this.memberMsg = memberMsg;
+    }
+
+    public String getMemberUid() {
+        return memberUid;
+    }
+
+    public void setMemberUid(String memberUid) {
+        this.memberUid = memberUid;
     }
 
     public String getMemberID() {

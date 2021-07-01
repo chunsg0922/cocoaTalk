@@ -20,9 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
+
+import com.google.firebase.auth.PhoneAuthOptions;
 
 import org.json.JSONObject;
 
@@ -33,7 +32,7 @@ public class RegisterPhoneInputActivity extends AppCompatActivity {
     private final int MY_PERMISSION_REQUEST_SMS = 1001;
     SmsManager smsManager;
     public String smsNum;
-//    Intent myIntent = new Intent(this, RegisterActivity.class);
+    PhoneAuthOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,31 +133,12 @@ public class RegisterPhoneInputActivity extends AppCompatActivity {
 
                 // 입력한 인증번호와 전송받은 인증번호가 일치하는 경우
                 if(num.equals(smsNum)){
-
+                    Intent intent = new Intent(RegisterPhoneInputActivity.this, RegisterActivity.class);
+                    intent.putExtra("memberPhone", memberPhone);
+                    startActivity(intent);
+                    finish();
                     // 휴대폰 번호 중복 검사를 진행하기 위해 서버 DB에 등록된 휴대폰 번호 조회 결과를 불러오는 과정
-                    Response.Listener<String> responseListener = new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            try{
-                                JSONObject jsonResponse = new JSONObject(response);
-                                boolean success = jsonResponse.getBoolean("success");
-                                if(success){ // 조회 결과, 이미 등록된 번호가 있다면 회원가입 실패 화면 전환
-                                    Intent intent = new Intent(RegisterPhoneInputActivity.this, RegisterFailActivity.class);
-                                    RegisterPhoneInputActivity.this.startActivity(intent);
-                                } else{ // 조회 결과, 등록된 번호가 없다면 회원가입 진행 화면 전환
-                                    Intent myIntent = new Intent(RegisterPhoneInputActivity.this, RegisterActivity.class);
-                                    myIntent.putExtra("memberPhone", memberPhone); // 인텐트를 통해 전화번호 value 전달
-                                    RegisterPhoneInputActivity.this.startActivity(myIntent);
 
-                                }
-                            } catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    PhoneCheckRequest phoneCheckRequest = new PhoneCheckRequest(memberPhone, responseListener);
-                    RequestQueue queue = Volley.newRequestQueue(RegisterPhoneInputActivity.this);
-                    queue.add(phoneCheckRequest);
                 }
                 // 인증번호가 일치하지 않는 경우
                 else {
