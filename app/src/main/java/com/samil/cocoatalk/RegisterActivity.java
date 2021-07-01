@@ -80,6 +80,8 @@ public class RegisterActivity extends AppCompatActivity {
                 String pscheck = inputPW2.getText().toString().trim();
                 String memberName = inputName.getText().toString().trim();
 
+                // 비밀번호 8자리 이상 및 설정 조건 부여하기
+
                 if (memberPassword.equals(pscheck)) {
 
                     // Firebase의 Authentication 수준에서의 회원가입 진행
