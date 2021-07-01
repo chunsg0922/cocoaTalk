@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.TabActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -59,9 +60,9 @@ public class LoginActivity extends AppCompatActivity {
                             boolean success = jsonResponse.getBoolean("success");
 
                             if(success){
-                                Intent intent = new Intent(LoginActivity.this, TabActivity.class);
-                                LoginActivity.this.startActivity(intent);
-//                                new BackgroundTask().execute();
+                                //Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
+                               // LoginActivity.this.startActivity(intent);
+                                new BackgroundTask().execute();
 //
 //                                SharedPreferences sf = getSharedPreferences("sFile", MODE_PRIVATE);
 //                                String id = sf.getString("id", "");
@@ -144,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onPostExecute(String result){
-            Intent intent = new Intent(LoginActivity.this, TabActivity.class);
+            Intent intent = new Intent(LoginActivity.this, FriendActivity.class);
             intent.putExtra("memberList", result);
             LoginActivity.this.startActivity(intent);
         }

@@ -5,23 +5,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Member {
 
-    @SerializedName("memberID")
-    @Expose
     private String memberID;
-    @SerializedName("memberPassword")
-    @Expose
     private String memberPassword;
-    @SerializedName("memberName")
-    @Expose
     private String memberName;
-    @SerializedName("memberPhone")
-    @Expose
     private String memberPhone;
-    @SerializedName("memberImg")
-    @Expose
     private String memberImg;
-    @SerializedName("memberMsg")
-    @Expose
     private String memberMsg;
 
     public Member(String memberPhone){
