@@ -42,12 +42,12 @@ public class MemberListAdapter extends BaseAdapter {
         ImageView memberImg = (ImageView)v.findViewById(R.id.memberImg);
         TextView memberMsg = (TextView)v.findViewById(R.id.memberMsg);
 
-        memberName.setText(memberList.get(position).getMemberName());
+       // memberName.setText(memberList.get(position).getMemberName());
 //        memberPhone.setText(memberList.get(position).getMemberPhone());
       //  memberImg.setImageURI(memberList.get(position).getMemberImg());
-        memberMsg.setText(memberList.get(position).getMemberMsg());
+       // memberMsg.setText(memberList.get(position).getMemberMsg());
 
-        v.setTag(memberList.get(position).getMemberID());
+      //  v.setTag(memberList.get(position).getMemberID());
         return v;
     }
 }

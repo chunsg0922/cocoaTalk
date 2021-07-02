@@ -27,6 +27,7 @@ public class RegisterFailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RegisterFailActivity.this, RegisterActivity.class);
                 RegisterFailActivity.this.startActivity(intent);
+                finish();
             }
         });
 

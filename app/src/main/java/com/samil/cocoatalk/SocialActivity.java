@@ -7,10 +7,12 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.database.Cursor;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.widget.TextView;
 
 
@@ -23,8 +25,6 @@ public class SocialActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_social);
-
-        TextView list = (TextView)findViewById(R.id.list);
 
         // 연락처 읽기를 위한 권한 설정
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -50,26 +50,34 @@ public class SocialActivity extends AppCompatActivity {
 
         // 연락처 쓰기를 위한 권한 설정
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED){
-                if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_CONTACTS)){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("안내");
-                    builder.setMessage("이 앱은 연락처 사용 권한을 부여하지 않으면 제대로 작동하지 않습니다.");
-                    builder.setIcon(android.R.drawable.ic_dialog_info);
+            if(ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.WRITE_CONTACTS)){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("안내");
+                builder.setMessage("이 앱은 연락처 사용 권한을 부여하지 않으면 제대로 작동하지 않습니다.");
+                builder.setIcon(android.R.drawable.ic_dialog_info);
 
-                    builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(SocialActivity.this, new String[] {Manifest.permission.WRITE_CONTACTS}, MY_PERMISSION_REQUEST_WRITE);
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else {
-                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CONTACTS}, MY_PERMISSION_REQUEST_WRITE);
+                builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(SocialActivity.this, new String[] {Manifest.permission.WRITE_CONTACTS}, MY_PERMISSION_REQUEST_WRITE);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CONTACTS}, MY_PERMISSION_REQUEST_WRITE);
 
-                }
+            }
 
-                }
+        }
+
+        TextView list = (TextView)findViewById(R.id.list);
+
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("id");
+        String uid = intent.getStringExtra("uid");
+        Log.e("로그인 멤버 정보 넘기기 : " , "아이디: " + id + ", UID: " + uid );
+
 
         
         Cursor c =  getContentResolver().query(

@@ -36,13 +36,14 @@ public class LoginActivity extends AppCompatActivity {
 
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth;
-    Member member;
+    Member member = new Member();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // 액션바(타이틀/네비게이션) 숨기기
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
@@ -62,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                 String memberID = editID.getText().toString().trim();
                 String memberPassword = editPasswd.getText().toString().trim();
 
+                // '아이디'와 '비밀번호' 입력칸이 비어있는 경우
                 if (memberID.equals("") || memberPassword.equals("")) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, R.style.myTheme).setTitle("알림").setMessage("아이디와 비밀번호를 입력해주세요.")
@@ -74,51 +76,51 @@ public class LoginActivity extends AppCompatActivity {
                     AlertDialog dialog = builder.create();
                     dialog.show();
 
-                } else {
+                }
+
+                // '아이디'와 '비밀번호' 입력이 되어있는 경우
+                else {
                     mAuth.signInWithEmailAndPassword(memberID, memberPassword)
                             .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if (task.isSuccessful()) {
-                                        // Sign in success, update UI with the signed-in user's information
+
                                         Log.d(TAG, "signInWithCustomToken:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-//                                        member.setMemberID(user.getEmail());
-//                                        member.setMemberPassword(user.get);
-                                        Intent intent = new Intent(LoginActivity.this, SocialActivity.class);
+                                        String id = user.getEmail();
+                                        String uid = user.getUid();
+                                        Log.e("로그인 이메일 정보 : " , id + ", UID: " + uid);
+                                        member.setId(id);
+                                        member.setUid(uid);
+
+                                        Intent intent = new Intent(LoginActivity.this, TabActivity.class);
+                                        intent.putExtra("id", member.getId());
+                                        intent.putExtra("uid", member.getUid());
                                         LoginActivity.this.startActivity(intent);
                                         finish();
                                         //updateUI(user);
                                     } else {
-                                        // If sign in fails, display a message to the user.
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, R.style.myTheme).setTitle("로그인 실패").
+                                                setMessage("회원 정보가 일치하지 않습니다. \n 계정과 비밀번호를 다시 입력해주세요.")
+                                                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        editID.setText("");
+                                                        editPasswd.setText("");
+                                                    }
+                                                });
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
                                         Log.w(TAG, "signInWithCustomToken:failure", task.getException());
-                                        Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                                Toast.LENGTH_SHORT).show();
-                                       // updateUI(null);
+                                       // updatUI(null);
                                     }
                                 }
                             });
 
-//                    CollectionReference reference = db.collection("member");
-//                    reference.whereEqualTo(memberID, true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful()) {
-//
-//                            }
-//                        }
-//                    });
                 }
             }
 
-
-                           // } else{
-                           //     Toast.makeText(LoginActivity.this, "일치하는 회원정보가 없습니다", Toast.LENGTH_SHORT).show();
-                           // }
-                     //   }
-                    //});
-               // }
-           // }
         });
 
         // '코코아계정 또는 비밀번호 찾기' 클릭 시 실행되는 리스너
@@ -127,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(LoginActivity.this, FindMeActivity.class);
                 LoginActivity.this.startActivity(intent);
+                finish();
             }
         });
 
@@ -135,8 +138,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterAgreementActivity.class);
+                //Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(intent);
-
+                finish();
             }
         });
     }

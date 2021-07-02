@@ -31,25 +31,25 @@ public class FriendActivity extends AppCompatActivity {
         adapter = new MemberListAdapter(getApplicationContext(), memberList);
         memberListView.setAdapter(adapter);
 
-        try{
-            JSONObject jsonObject = new JSONObject(intent.getStringExtra("memberList"));
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
-            int count = 0;
-            String memberID, memberPassword, memberName, memberPhone, memberImg, memberMsg;
-            while(count < jsonArray.length()){
-                JSONObject object = jsonArray.getJSONObject(count);
-                memberID = object.getString("memberID");
-                memberPassword = object.getString("memberPassword");
-                memberName = object.getString("memberName");
-                memberPhone = object.getString("memberPhone");
-                memberImg = object.getString("memberImg");
-                memberMsg = object.getString("memberMsg");
-                Member member = new Member(memberID, memberPassword, memberName, memberPhone, memberImg, memberMsg);
-                memberList.add(member);
-                count++;
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+//        try{
+//            JSONObject jsonObject = new JSONObject(intent.getStringExtra("memberList"));
+//            JSONArray jsonArray = jsonObject.getJSONArray("response");
+//            int count = 0;
+//            String memberID, memberPassword, memberName, memberPhone, memberImg, memberMsg;
+//            while(count < jsonArray.length()){
+//                JSONObject object = jsonArray.getJSONObject(count);
+//                memberID = object.getString("memberID");
+//                memberPassword = object.getString("memberPassword");
+//                memberName = object.getString("memberName");
+//                memberPhone = object.getString("memberPhone");
+//                memberImg = object.getString("memberImg");
+//                memberMsg = object.getString("memberMsg");
+//                Member member = new Member(memberID, memberPassword, memberName, memberPhone, memberImg, memberMsg);
+//                memberList.add(member);
+//                count++;
+//            }
+//        } catch(Exception e){
+//            e.printStackTrace();
+//        }
     }
 }

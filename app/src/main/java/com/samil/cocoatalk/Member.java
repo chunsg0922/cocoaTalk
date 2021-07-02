@@ -3,94 +3,68 @@ package com.samil.cocoatalk;
 
 public class Member {
 
-    private String memberUid;
-    private String memberID;
-    private String memberPassword;
-    private String memberName;
-    private String memberPhone;
-    private String memberImg;
-    private String memberMsg;
+    private String uid;
+    private String id;
+    private String password;
+    private String name;
+    private String phone;
+    private String img;
+    private String msg;
 
-    public Member(String memberPhone){
-        this.memberPhone = memberPhone;
+
+    public String getUid() {
+        return uid;
     }
 
-    public Member(String memberID, String memberPassword, String memberName, String memberPhone, String memberImg, String memberMsg) {
-        this.memberID = memberID;
-        this.memberPassword = memberPassword;
-        this.memberName = memberName;
-        this.memberPhone = memberPhone;
-        this.memberImg = memberImg;
-        this.memberMsg = memberMsg;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public String getMemberUid() {
-        return memberUid;
+    public String getId() {
+        return id;
     }
 
-    public void setMemberUid(String memberUid) {
-        this.memberUid = memberUid;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getMemberID() {
-        return memberID;
+    public String getPassword() {
+        return password;
     }
 
-    public void setMemberID(String memberID) {
-        this.memberID = memberID;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getMemberPassword() {
-        return memberPassword;
+    public String getName() {
+        return name;
     }
 
-    public void setMemberPassword(String memberPassword) {
-        this.memberPassword = memberPassword;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMemberName() {
-        return memberName;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMemberName(String memberName) {
-        this.memberName = memberName;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getMemberPhone() {
-        return memberPhone;
+    public String getImg() {
+        return img;
     }
 
-    public void setMemberPhone(String memberPhone) {
-        this.memberPhone = memberPhone;
+    public void setImg(String img) {
+        this.img = img;
     }
 
-    public String getMemberImg() {
-        return memberImg;
+    public String getMsg() {
+        return msg;
     }
 
-    public void setMemberImg(String memberImg) {
-        this.memberImg = memberImg;
-    }
-
-    public String getMemberMsg() {
-        return memberMsg;
-    }
-
-    public void setMemberMsg(String memberMsg) {
-        this.memberMsg = memberMsg;
-    }
-
-    @Override
-    public String toString(){
-        return "Member{" +
-                "memberId" + memberID + '\'' +
-                "memberPassword" + memberPassword + '\'' +
-                "memberName" + memberName + '\'' +
-                "memberhone" + memberPhone + '\'' +
-                "memberImg" + memberImg + '\'' +
-                "memberMsg" + memberMsg + '\'' +
-                '}';
-
-
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }
