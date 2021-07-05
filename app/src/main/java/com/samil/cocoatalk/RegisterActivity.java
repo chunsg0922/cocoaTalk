@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -31,12 +30,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.samil.cocoatalk.model.UserModel;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
+import java.lang.reflect.Member;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import static android.content.ContentValues.TAG;
@@ -46,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     int count = 0;
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    Member member;
+    UserModel userModel = new UserModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +63,11 @@ public class RegisterActivity extends AppCompatActivity {
         EditText inputName = (EditText)findViewById(R.id.inputName);
         TextView asLoginText = (TextView)findViewById(R.id.asLoginText);
 
-            Intent phoneIntent = getIntent();
-                    String Phone = phoneIntent.getStringExtra("memberPhone");
-                    String memberPhone = makePhoneNum(Phone);
+        Intent phoneIntent = getIntent();
+        String Phone = phoneIntent.getStringExtra("memberPhone");
+        String memberPhone = makePhoneNum(Phone);
 
-                    Log.i("okBtn : onClick", "데이터 씌우기" + memberPhone);
+        Log.i("okBtn : onClick", "데이터 씌우기" + memberPhone);
         okRegisterBtn.setEnabled(false);
 
         // '확인' 클릭 시 실행되는 리스너
@@ -98,34 +97,33 @@ public class RegisterActivity extends AppCompatActivity {
                                         FirebaseUser user = firebaseAuth.getCurrentUser(); // FirebaseUser 객체 선언
                                         String email = user.getEmail(); // user의 email,uid를 받아와서 변수에 저장해준다.
                                         String uid = user.getUid();
-                                        String name = memberName;
 
-                                        HashMap<Object, String> member = new HashMap<>();
-
+                                        HashMap<Object, String> member = new HashMap<>(); // HashMap 객체 member 생성
+                                        // HashMap 객체에 key-value 형태로 데이터 저장
                                         member.put("uid", uid );
-                                        member.put("email", email);
-                                        member.put("name",name);
+                                        member.put("id", email);
+                                        member.put("name",memberName);
                                         member.put("phone",memberPhone);
-                                        member.put("img",null);
-                                        member.put("msg",null);
+                                        member.put("img","");
+                                        member.put("msg","");
 
                                         FirebaseDatabase database = FirebaseDatabase.getInstance();
                                         DatabaseReference reference = database.getReference("Users");
                                         reference.child(uid).setValue(member);
-                                        db.collection("member")
-                                                .add(member)
-                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                    @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
-                                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.w(TAG, "Error adding document", e);
-                                                    }
-                                                });
+//                                        db.collection("member")
+//                                                .add(member)
+//                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                                                    @Override
+//                                                    public void onSuccess(DocumentReference documentReference) {
+//                                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+//                                                    }
+//                                                })
+//                                                .addOnFailureListener(new OnFailureListener() {
+//                                                    @Override
+//                                                    public void onFailure(@NonNull Exception e) {
+//                                                        Log.w(TAG, "Error adding document", e);
+//                                                    }
+//                                                });
                                         Intent intent = new Intent(RegisterActivity.this, RegisterSuccessActivity.class);
                                         startActivity(intent);
                                         finish();
@@ -138,16 +136,6 @@ public class RegisterActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
-//                    Map<String, Object> user = new HashMap<>();
-//                    user.put("id", memberID);
-//                    user.put("password", memberPassword);
-//                    user.put("name", memberName);
-//                    user.put("phone", memberPhone);
-//                    user.put("img", null);
-//                    user.put("msg", null);
-
-
                 }
                     // 비밀번호 확인이 일치하지 않는 경우
                     else {

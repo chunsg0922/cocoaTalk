@@ -5,21 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#d1d1d1"
-    tools:context=".ui.home.HomeFragment">
+    android:background="#d1d1d1">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/memberListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="200dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:divider="#d1d1d1"
-        android:dividerHeight="10dp" />
+        />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 </RelativeLayout>

@@ -3,23 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_friend">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.samil.cocoatalk.ui.home.HomeFragment"
+        android:id="@+id/navigation_friend"
+        android:name="com.samil.cocoatalk.fragment.PeopleFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_people" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.samil.cocoatalk.ui.home.HomeFragment"
-        android:label="@string/title_friends"
-        tools:layout="@layout/fragment_dashboard" />
-
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.samil.cocoatalk.ui.notifications.profileFragment"
+        android:id="@+id/navigation_profile"
+        android:name="com.samil.cocoatalk.fragment.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
+
+
 </navigation>

@@ -1,16 +1,13 @@
-package com.samil.cocoatalk;
+package com.samil.cocoatalk.model;
 
-
-public class Member {
+public class UserModel {
 
     private String uid;
     private String id;
-    private String password;
     private String name;
     private String phone;
-    private String img;
     private String msg;
-
+    private String profile;
 
     public String getUid() {
         return uid;
@@ -26,14 +23,6 @@ public class Member {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {
@@ -52,19 +41,19 @@ public class Member {
         this.phone = phone;
     }
 
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
     public String getMsg() {
         return msg;
     }
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
     }
 }
