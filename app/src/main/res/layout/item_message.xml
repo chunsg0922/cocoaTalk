@@ -2,29 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-    
+    android:orientation="horizontal"
+    android:id="@+id/messageItem_Linearlayout_main">
+    <!-- 메시지 레이아웃 -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/messageItem_Linearlayout"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:gravity="center">
 
     <ImageView
         android:id="@+id/messageItem_profile"
         android:layout_width="50dp"
         android:layout_height="50dp"/>
+
+        <!-- 이름, 메시지, 시간표시를 하기위한 레이아웃 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
     <TextView
         android:id="@+id/messageItem_name"
         android:text="이름"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/messageItem_message"
+                android:text="메시지"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/messageItem_timestamp"
+                android:textColor="@android:color/darker_gray"
+                android:text="2011.11.11 11:11"
+                />
+        </LinearLayout>
     </LinearLayout>
-    <TextView
-        android:id="@+id/messageItem_message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
+
+
+    </LinearLayout>
+
 
 </LinearLayout>

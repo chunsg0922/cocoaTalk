@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.CocoaTalk" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <!-- 코코아톡 기본 테마 -->
+    <style name="Theme.CocoaTalk" parent="Theme.AppCompat.Light">
+
         <!-- Primary brand color. -->
         <item name="colorPrimary">#ffffff</item>
         <item name="colorPrimaryVariant">#000000</item>
@@ -11,9 +12,34 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-<!--        <item name="windowActionBar">true</item>-->
-<!--        <item name="windowNoTitle">true</item>-->
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+
+    <style name="Theme.CocoaTalk.MainTheme">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+    
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">#00479b</item>
+        <item name="android:titleTextStyle">@style/ActionBarTextColor</item>
+    </style>
+
+    <style name="ActionBarTextColor" parent="android:TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">#000000</item>
+    </style>"
+
+
+    <style name="ToolbarTitleText">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- Toolbar 타이틀 색상 -->
+    <style name="ToolbarTitleStyle.Dark" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/black</item> <!-- Toolbar의 타이틀 텍스트 색상-->
+        <item name="android:textSize">15dp</item> <!-- Toolbar의 타이틀 텍스트 사이즈-->
     </style>
 
     <style name="myTheme" parent="Theme.AppCompat.Light.Dialog">

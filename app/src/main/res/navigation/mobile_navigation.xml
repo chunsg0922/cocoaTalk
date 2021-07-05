@@ -8,13 +8,19 @@
     <fragment
         android:id="@+id/navigation_friend"
         android:name="com.samil.cocoatalk.fragment.PeopleFragment"
-        android:label="@string/title_home"
+        android:label="@string/nav_people"
         tools:layout="@layout/fragment_people" />
+
+    <fragment
+        android:id="@+id/navigation_chat"
+        android:name="com.samil.cocoatalk.fragment.ChatFragment"
+        android:label="@string/nav_chat"
+        tools:layout="@layout/fragment_chat" />
 
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.samil.cocoatalk.fragment.ProfileFragment"
-        android:label="@string/title_profile"
+        android:label="@string/nav_profile"
         tools:layout="@layout/fragment_profile" />
 
 

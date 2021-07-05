@@ -95,9 +95,9 @@ public class LoginActivity extends AppCompatActivity {
                                         SharedPreferences sharedPref = getSharedPreferences("shared", Context.MODE_PRIVATE); // SharedPreference 객체 생성해준다.
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("id", memberID);
-                                        editor.commit();
+                                        editor.apply();
 
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity2.class);
                                         intent.putExtra("id", userModel.getId());
                                         intent.putExtra("uid", userModel.getUid());
                                         LoginActivity.this.startActivity(intent);

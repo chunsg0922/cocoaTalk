@@ -20,13 +20,14 @@
     <string name="findPWText">  비밀번호 재설정</string>
     <string name="findText">찾으시는 서비스를 선택해주세요</string>
     <string name="title_activity_tab">MainActivity</string>
-    <string name="title_home">친구</string>
-    <string name="title_friends">채팅</string>
-    <string name="title_profile">프로필</string>
-    <string name="nav_social">친구</string>
+    <string name="nav_people">친구</string>
     <string name="nav_chat">채팅</string>
     <string name="nav_profile">프로필</string>
     <string name="title_activity_tabs">MainActivity</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

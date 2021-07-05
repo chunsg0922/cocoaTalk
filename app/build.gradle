@@ -38,6 +38,9 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+
 
 
     // 프로젝트 생성 시 기본 적용되는 라이브러리
@@ -60,6 +63,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:23.0.1' // Firestore
     implementation 'com.github.bumptech.glide:glide:4.10.0'  // Firebase 이미지 불러오기 위한 라이브러리
     implementation 'com.google.firebase:firebase-storage:20.0.0' // Firebase storage
+    implementation 'com.google.firebase:firebase-messaging' // Firebase Cloud Messaging
 
     implementation "androidx.core:core-ktx:+"
 

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class PeopleFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
+
         View view  = inflater.inflate(R.layout.fragment_people, container, false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.peoplefragment_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
@@ -56,14 +58,15 @@ public class PeopleFragment extends Fragment {
         public PeopleFragmentRecyclerViewAdapter () {
             userModels = new ArrayList<>();
             String uid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // 접속한 계정의 uid를 저장
+            // DB의 Users 테이블에 있는 데이터를 가져온다.
             FirebaseDatabase.getInstance().getReference().child("Users").addValueEventListener(new ValueEventListener(){
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot){
                         userModels.clear();
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             UserModel userModel = snapshot.getValue(UserModel.class);
-                            if(userModel.getUid().equals(uid)){
-                                continue;
+                            if(userModel.getUid().equals(uid)){ // userModel객체의 uid값이 접속한 계정의 uid와 같을 경우
+                                continue; // 목록에 추가시키는 작업을 하지 않고 그냥 넘어간다.
                             }
                             userModels.add(userModel);
                         }
@@ -107,6 +110,7 @@ public class PeopleFragment extends Fragment {
                 public void onClick(View view){
                     Intent intent = new Intent(view.getContext(), MessageActivity.class);
                     intent.putExtra("uid", userModels.get(position).getUid());
+                    intent.putExtra("profile", userModels.get(position).getProfile());
                     ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright, R.anim.toleft ); // 액티비티 전환 간 애니메이션 적용
                     startActivity(intent, activityOptions.toBundle()); // 애니메이션 적용한 activityOption을 intent와 함께 보낸다.
                 }

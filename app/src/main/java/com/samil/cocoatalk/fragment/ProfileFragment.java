@@ -46,19 +46,13 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-//        notificationsViewModel =
-//                ViewModelProviders.of(this).get(NotificationsViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
-//        final TextView textView = root.findViewById(R.id.text_notifications);
-//        notificationsViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+
+        // SharedPreferences 객체로 저장된 데이터 전달
         SharedPreferences sharedPref = getActivity().getSharedPreferences("shared", Context.MODE_PRIVATE);
-        id = sharedPref.getString("email", "");
-        Log.d(TAG, "stEmail : " + id);
+        id = sharedPref.getString("id", id);
+        Log.d(TAG, "ID 정보 : " + id);
 
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
@@ -99,7 +93,7 @@ public class ProfileFragment extends Fragment {
 
         try {
             localFile = File.createTempFile("images", "jpg");
-            StorageReference riversRef = mStorageRef.child("users").child(id).child("profile.jpg");
+            StorageReference riversRef = mStorageRef.child("Users").child(id).child("profile.jpg");
 
             riversRef.getFile(localFile)
                     .addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
