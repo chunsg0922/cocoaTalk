@@ -5,8 +5,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import android.text.Editable;
@@ -30,10 +32,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.samil.cocoatalk.model.UserModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -46,6 +52,8 @@ public class RegisterActivity extends AppCompatActivity {
     int count = 0;
     final FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserModel userModel = new UserModel();
+
+    Uri profile = Uri.parse("android.resource://com.samil.cocoatalk/drawable/profile"); // 기본 이미지의 파일 경로
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String pscheck = inputPW2.getText().toString().trim();
                 String memberName = inputName.getText().toString().trim();
 
+
                 // '비밀번호'가 8글자 이내일 경우
                 if(memberPassword.length() < 8 || pscheck.length() < 8 ){
                     Toast.makeText(RegisterActivity.this, "비밀번호는 8~20글자 이내로 설정해주세요", Toast.LENGTH_SHORT).show();
@@ -98,32 +107,47 @@ public class RegisterActivity extends AppCompatActivity {
                                         String email = user.getEmail(); // user의 email,uid를 받아와서 변수에 저장해준다.
                                         String uid = user.getUid();
 
-                                        HashMap<Object, String> member = new HashMap<>(); // HashMap 객체 member 생성
-                                        // HashMap 객체에 key-value 형태로 데이터 저장
-                                        member.put("uid", uid );
-                                        member.put("id", email);
-                                        member.put("name",memberName);
-                                        member.put("phone",memberPhone);
-                                        member.put("img","");
-                                        member.put("msg","");
+                                        // 스토리지참조 객체 생성 (생성하는 계정의 email을 참조하여 프로필 사진을 저장)
+                                        StorageReference riversRef = FirebaseStorage.getInstance().getReference().child("users").child(email).child("profile.jpg");
 
-                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                        DatabaseReference reference = database.getReference("Users");
-                                        reference.child(uid).setValue(member);
-//                                        db.collection("member")
-//                                                .add(member)
-//                                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-//                                                    @Override
-//                                                    public void onSuccess(DocumentReference documentReference) {
-//                                                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-//                                                    }
-//                                                })
-//                                                .addOnFailureListener(new OnFailureListener() {
-//                                                    @Override
-//                                                    public void onFailure(@NonNull Exception e) {
-//                                                        Log.w(TAG, "Error adding document", e);
-//                                                    }
-//                                                });
+                                        riversRef.putFile(profile)
+                                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                    @Override
+                                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                        // Get a URL to the uploaded content
+                                                        // Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                                        Log.d(TAG, taskSnapshot.toString());
+
+                                                        FirebaseStorage.getInstance().getReference().child("users").child(email).child("profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull @NotNull Task<Uri> task) {
+                                                                Uri downUri = task.getResult();
+                                                                String memberProfile = downUri.toString();
+
+                                                                UserModel userModel = new UserModel();
+                                                                userModel.setName(memberName);
+                                                                userModel.setId(email);
+                                                                userModel.setMsg("");
+                                                                userModel.setUid(uid);
+                                                                userModel.setPhone(memberPhone);
+                                                                userModel.setProfile(memberProfile);
+
+                                                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                                                DatabaseReference reference = database.getReference("Users");
+                                                                reference.child(uid).setValue(userModel);
+                                                            }
+                                                        });
+
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception exception) {
+                                                        // Handle unsuccessful uploads
+                                                        // ...
+                                                    }
+                                                });
+
                                         Intent intent = new Intent(RegisterActivity.this, RegisterSuccessActivity.class);
                                         startActivity(intent);
                                         finish();
@@ -255,6 +279,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(!Pattern.matches(regEx, phoneNum)) return null;
         return phoneNum.replaceAll(regEx, "$1-$2-$3");
     }
+
 
 }
 

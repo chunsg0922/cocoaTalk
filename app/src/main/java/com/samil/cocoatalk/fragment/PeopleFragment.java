@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.samil.cocoatalk.R;
 import com.samil.cocoatalk.chat.MessageActivity;
 import com.samil.cocoatalk.model.UserModel;
+import com.squareup.picasso.Picasso;
 
 
 import org.jetbrains.annotations.NotNull;
@@ -92,16 +93,17 @@ public class PeopleFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-            //if(userModels.get(position).getProfile().equals("")){
-            //    ((CustomViewHolder)holder).imageView.setImageDrawable(drawable);
-            //} else {
-                Glide.with
-                        (holder.itemView.getContext())
-                        .load(userModels.get(position).getProfile())
-                        .apply(new RequestOptions().circleCrop())
-                        .into(((CustomViewHolder) holder).imageView);
 
-           // }
+//                Glide.with
+//                        (holder.itemView.getContext())
+//                        .load(userModels.get(position).getProfile())
+//                        .apply(new RequestOptions().circleCrop())
+//                        .into(((CustomViewHolder) holder).imageView);
+
+            Picasso.get()
+                    .load(userModels.get(position).getProfile())
+                    .into(((CustomViewHolder) holder).imageView);
+
             ((CustomViewHolder) holder).nameTextView.setText(userModels.get(position).getName());
             ((CustomViewHolder) holder).msgTextView.setText(userModels.get(position).getMsg());
 

@@ -40,7 +40,7 @@ android {
 dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 
     // 프로젝트 생성 시 기본 적용되는 라이브러리
