@@ -8,6 +8,8 @@ public class UserModel {
     private String phone;
     private String msg;
     private String profile;
+    public String comment;
+
 
     public String getUid() {
         return uid;

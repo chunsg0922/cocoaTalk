@@ -103,7 +103,7 @@ public class PeopleFragment extends Fragment {
 
            // }
             ((CustomViewHolder) holder).nameTextView.setText(userModels.get(position).getName());
-            ((CustomViewHolder) holder).msgTextView.setText(userModels.get(position).getMsg());
+           // ((CustomViewHolder) holder).msgTextView.setText(userModels.get(position).getMsg());
 
             holder.itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
@@ -115,6 +115,10 @@ public class PeopleFragment extends Fragment {
                     startActivity(intent, activityOptions.toBundle()); // 애니메이션 적용한 activityOption을 intent와 함께 보낸다.
                 }
             });
+            if (userModels.get(position).comment != null) {
+
+                ((CustomViewHolder) holder).textView_comment.setText(userModels.get(position).comment);
+            }
         }
 
         @Override
@@ -125,12 +129,14 @@ public class PeopleFragment extends Fragment {
         private class CustomViewHolder extends RecyclerView.ViewHolder {
             public ImageView imageView;
             public TextView nameTextView, msgTextView;
+            public TextView textView_comment;
 
             public CustomViewHolder(View view) {
                 super(view);
                 imageView = (ImageView) view.findViewById(R.id.frienditem_imageview);
-                nameTextView = (TextView) view.findViewById(R.id.frienditem_name);
-                msgTextView = (TextView)view.findViewById(R.id.frienditem_msg);
+                nameTextView = (TextView) view.findViewById(R.id.frienditem_textview);
+                //msgTextView = (TextView)view.findViewById(R.id.frienditem_msg);
+                textView_comment = (TextView)view.findViewById(R.id.frienditem_textview_comment);
             }
         }
     }

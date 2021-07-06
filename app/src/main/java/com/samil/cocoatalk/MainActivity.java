@@ -14,11 +14,17 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
 import com.samil.cocoatalk.fragment.ChatFragment;
 import com.samil.cocoatalk.fragment.PeopleFragment;
 import com.samil.cocoatalk.fragment.ProfileFragment;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }
 
 //
@@ -74,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 ////                        return true;
 ////                    case R.id.navigation_profile:
 ////                        getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout, new ProfileFragment()).commit();
+////                        return true;
+//                        case R.id.action_account;
+//                          getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout, new AccountFragment()).commit();
 ////                        return true;
 ////                }
 //        return false;

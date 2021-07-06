@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
@@ -36,10 +37,13 @@ import com.samil.cocoatalk.model.UserModel;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 public class MessageActivity extends AppCompatActivity {
@@ -49,12 +53,20 @@ public class MessageActivity extends AppCompatActivity {
     private String chatRoom_uid; // 채팅방 uid
     private String profile_other;
 
+
     private Button button;
     private EditText edit;
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
 
     private RecyclerView recyclerView;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    private int position;
+    int peopleCount = 0;
+    private ByteArrayOutputStream users;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,15 +170,34 @@ public class MessageActivity extends AppCompatActivity {
         // 메시지 목록을 띄우는 메소드
         void getMessageList(){
             // chatRooms 테이블 중 해당하는 uid를 찾고, 그 하위 테이블의 데이터를 모두 불러온다.
-            FirebaseDatabase.getInstance().getReference().child("chatRoom").child(chatRoom_uid).child("comments").addValueEventListener(new ValueEventListener() {
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("chatRoom").child(chatRoom_uid).child("comments");
+            valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
                     comments.clear();
+                    Map<String,Object> readUserMap = new HashMap<>();
                     for(DataSnapshot item : dataSnapshot.getChildren()){
-                        comments.add(item.getValue(ChatModel.Comment.class));
+                        String key = item.getKey();
+                        ChatModel.Comment comment_origin = item.getValue(ChatModel.Comment.class);
+                        ChatModel.Comment comment_motify = item.getValue(ChatModel.Comment.class);
+                        comment_motify.readUsers.put(uid, true);
+                        readUserMap.put(key,comment_motify);
+                        comments.add(comment_origin);
                     }
-                    notifyDataSetChanged(); // 메시지 갱신(업데이트)
-                    recyclerView.scrollToPosition(comments.size()-1); // 메소드가 실행될 때마다 리사이클러뷰의 스크롤을 최하단으로 설정해준다.
+                    if(!comments.get(comments.size() -1).readUsers.containsKey(uid)) {
+
+                    FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoom_uid).child("comments")
+                            .updateChildren(readUserMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<Void> task) {
+                            notifyDataSetChanged();
+                            recyclerView.scrollToPosition(comments.size() - 1);
+                        }
+                    }) ;
+                }else{
+                        notifyDataSetChanged();
+                        recyclerView.scrollToPosition(comments.size() - 1);
+                    }
                 }
 
                 @Override
@@ -196,6 +227,7 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout.setVisibility(View.VISIBLE);
                 messageViewHolder.textView_message.setTextSize(20);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
+                setReadCounter(position,messageViewHolder.textview_readCounter_left);
             }
             // 상대방이 메시지를 보내는 경우
             else{
@@ -213,6 +245,7 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.textView_message.setText(comments.get(position).message);
                 messageViewHolder.textView_message.setTextSize(20);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
+                setReadCounter(position,messageViewHolder.textview_readCounter_right);
             }
 
             long unixTime = (long)comments.get(position).timestamp;
@@ -220,6 +253,42 @@ public class MessageActivity extends AppCompatActivity {
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             String time = simpleDateFormat.format(date);
             messageViewHolder.textView_timestamp.setText(time);
+        }
+
+        void setReadCounter(final int Position, final TextView textView){
+            if(peopleCount ==0) {
+
+
+                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoom_uid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Map<String, Boolean> uesrs = (Map<String, Boolean>) dataSnapshot.getValue();
+                        peopleCount = users.size();
+                        int count = peopleCount-comments.get(position).readUsers.size();
+                        if (count > 0) {
+                            textView.setVisibility(View.VISIBLE);
+                            textView.setText(String.valueOf(count));
+
+                        } else {
+                            textView.setVisibility((View.INVISIBLE));
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                    }
+                });
+            }else{
+                int count = peopleCount-comments.get(position).readUsers.size();
+                if (count > 0) {
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(String.valueOf(count));
+
+                } else {
+                    textView.setVisibility((View.INVISIBLE));
+                }
+            }
         }
 
         @Override
@@ -234,6 +303,8 @@ public class MessageActivity extends AppCompatActivity {
             public LinearLayout linearLayout;
             public LinearLayout linearLayout_main;
             public TextView textView_timestamp;
+            public TextView textview_readCounter_right;
+            public TextView textview_readCounter_left;
 
             public MessageViewHolder(View view){
                 super(view);
@@ -243,7 +314,18 @@ public class MessageActivity extends AppCompatActivity {
                 linearLayout = (LinearLayout)view.findViewById(R.id.messageItem_Linearlayout);
                 linearLayout_main = (LinearLayout)view.findViewById(R.id.messageItem_Linearlayout_main);
                 textView_timestamp = (TextView)view.findViewById(R.id.messageItem_timestamp);
+                textview_readCounter_left = (TextView)view.findViewById(R.id.messageItem_textview_readCounter_left);
+                textview_readCounter_left = (TextView)view.findViewById(R.id.messageItem_textview_readCounter_right);
+
             }
         }
     }
+
+    @Override
+    public void onBackPressed(){
+        databaseReference.removeEventListener(valueEventListener);
+                finish();
+        overridePendingTransition(R.anim.fromleft, R.anim.toright);
+    }
+
 }
