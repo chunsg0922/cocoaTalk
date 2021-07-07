@@ -92,9 +92,10 @@ public class LoginActivity extends AppCompatActivity {
                                         userModel.setUid(uid);
 
                                         // SharedPreferences 객체에 로그인 한 아이디를 저장한다.
-                                        SharedPreferences sharedPref = getSharedPreferences("shared", Context.MODE_PRIVATE); // SharedPreference 객체 생성해준다.
+                                        SharedPreferences sharedPref = getSharedPreferences("save", Context.MODE_PRIVATE); // SharedPreference 객체 생성해준다.
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("id", memberID);
+                                        editor.putString("uid", uid);
                                         editor.apply();
 
                                         Intent intent = new Intent(LoginActivity.this, MainActivity2.class);

@@ -25,16 +25,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.samil.cocoatalk.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileFragment";
@@ -43,7 +51,7 @@ public class ProfileFragment extends Fragment {
 
     ImageView imageView;
     private StorageReference mStorageRef;
-    String id;
+    String id, uid;
     File localFile;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,8 +61,9 @@ public class ProfileFragment extends Fragment {
 
         // SharedPreferences 객체로 저장된 데이터 전달
         // 로그인했던 사용자의 email 계정을 가져온다.
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("shared", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("save", Context.MODE_PRIVATE);
         id = sharedPref.getString("id", id);
+        uid = sharedPref.getString("uid", uid);
         Log.d(TAG, "ID 정보 : " + id);
 
         mStorageRef = FirebaseStorage.getInstance().getReference(); // 파이어베이스 스토리지를 초기화하여 참조하는 StorageReference 인스턴스
@@ -109,9 +118,23 @@ public class ProfileFragment extends Fragment {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            // Get a URL to the uploaded content
-//                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
                             Log.d(TAG, taskSnapshot.toString());
+
+                            FirebaseStorage.getInstance().getReference().child("users").child(id).child("profile.jpg").getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull @NotNull Task<Uri> task) {
+                                    Uri downUri = task.getResult();
+                                    String memberProfile = downUri.toString();
+
+                                    Map<String, Object> update = new HashMap<>();
+                                    update.put("profile", memberProfile);
+
+                                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                    DatabaseReference reference = database.getReference("Users");
+                                    reference.child(uid).updateChildren(update);
+                                }
+                            });
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {

@@ -50,11 +50,14 @@ public class ChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.chatfragment_recyclerview);
+
+//        if(recyclerView)
         recyclerView.setAdapter(new ChatRecyclerViewAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         return view;
     }
 
+    // 채팅목록을 리스트 형태로 띄우기 위한 Adapter 클래스
     class ChatRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         private List<ChatModel> chatModels = new ArrayList<>(); // 채팅 데이터를 담을 수 있는 ChatModel타입의 List 객체 생성
