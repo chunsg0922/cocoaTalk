@@ -1,4 +1,4 @@
-package com.samil.cocoatalk;
+package com.samil.cocoatalk.register;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -22,8 +22,8 @@ import androidx.core.content.ContextCompat;
 
 
 import com.google.firebase.auth.PhoneAuthOptions;
-
-import org.json.JSONObject;
+import com.samil.cocoatalk.LoginActivity;
+import com.samil.cocoatalk.R;
 
 import java.util.Random;
 

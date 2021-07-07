@@ -7,21 +7,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.MenuItem;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.iid.internal.FirebaseInstanceIdInternal;
-import com.samil.cocoatalk.fragment.ChatFragment;
-import com.samil.cocoatalk.fragment.PeopleFragment;
-import com.samil.cocoatalk.fragment.ProfileFragment;
 
-import org.jetbrains.annotations.NotNull;
+import com.samil.cocoatalk.databinding.ActivityMainBinding;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,64 +24,41 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    PeopleFragment peopleFragment;
-    ChatFragment chatFragment;
-    ProfileFragment profileFragment;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        peopleFragment = new PeopleFragment();
-        chatFragment = new ChatFragment();
-        profileFragment = new ProfileFragment();
+//        ActionBar actionBar = getSupportActionBar();
+//        actionBar.setT
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.navigation_friend, R.id.navigation_chat, R.id.navigation_profile)
+                .build();
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+        NavigationUI.setupWithNavController(binding.navView, navController);
 
-
+        //passPushTokenToServer();
 
 
     }
 
+    void passPushTokenToServer(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String token = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("pushToken", token);
+
+        FirebaseDatabase.getInstance().getReference().child("Users").child(uid).updateChildren(map);
+
+
+    }
 }
-
-//
-//    BottomNavigationView bottomNavigationView = findViewById(R.id.mainactivity_bottomnavigationview);
-//    AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//            R.id.navigation_friend, R.id.navigation_chat, R.id.navigation_profile)
-//            .build();
-//    NavController navController = Navigation.findNavController(this, R.id.mainactivity_framelayout);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-//                NavigationUI.setupWithNavController(bottomNavigationView, navController);
-
-
-//    BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.mainactivity_bottomnavigationview);
-//
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//@SuppressLint("NonConstantResourceId")
-//@Override
-//public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
-//
-//        int id = item.getItemId();
-//
-//        if(id == R.id.navigation_friend){
-//        getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout, peopleFragment).commit();
-//        }
-////                switch (item.getItemId()){
-////                    case R.id.navigation_friend:
-////                        getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout, peopleFragment).commit();
-////                        return true;
-////                    case R.id.navigation_chat:
-////                        getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout, new ChatFragment()).commit();
-////                        return true;
-////                    case R.id.navigation_profile:
-////                        getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout, new ProfileFragment()).commit();
-////                        return true;
-//                        case R.id.action_account;
-//                          getFragmentManager().beginTransaction().replace(R.id.mainactivity_framelayout, new AccountFragment()).commit();
-////                        return true;
-////                }
-//        return false;
-//        }
-//
-//        });

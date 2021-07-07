@@ -1,11 +1,10 @@
-package com.samil.cocoatalk;
+package com.samil.cocoatalk.register;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -30,18 +29,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.samil.cocoatalk.R;
 import com.samil.cocoatalk.model.UserModel;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.lang.reflect.Member;
-import java.util.HashMap;
 import java.util.regex.Pattern;
 
 import static android.content.ContentValues.TAG;

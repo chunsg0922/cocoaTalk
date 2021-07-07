@@ -23,8 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.samil.cocoatalk.model.UserModel;
-
-import java.lang.reflect.Member;
+import com.samil.cocoatalk.register.RegisterAgreementActivity;
 
 import static android.content.ContentValues.TAG;
 
@@ -98,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                                         editor.putString("uid", uid);
                                         editor.apply();
 
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity2.class);
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                         intent.putExtra("id", userModel.getId());
                                         intent.putExtra("uid", userModel.getUid());
                                         LoginActivity.this.startActivity(intent);

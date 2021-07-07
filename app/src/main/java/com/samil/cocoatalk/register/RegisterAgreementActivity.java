@@ -1,20 +1,17 @@
-package com.samil.cocoatalk;
+package com.samil.cocoatalk.register;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatCheckBox;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.nio.file.StandardWatchEventKinds;
+import com.samil.cocoatalk.LoginActivity;
+import com.samil.cocoatalk.R;
 
 public class RegisterAgreementActivity extends AppCompatActivity {
 

@@ -1,9 +1,11 @@
 package com.samil.cocoatalk.fragment;
 
+
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +15,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.samil.cocoatalk.R;
+import com.samil.cocoatalk.SocialActivity;
 import com.samil.cocoatalk.chat.MessageActivity;
 import com.samil.cocoatalk.model.UserModel;
 import com.squareup.picasso.Picasso;
@@ -34,19 +34,55 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PeopleFragment extends Fragment {
+
+    private ArrayList<Map<String, String>> dataList;
+    private HashMap<String, String> map;
+    List<UserModel> userModels;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
-
         View view  = inflater.inflate(R.layout.fragment_people, container, false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.peoplefragment_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());
+
+        dataList = new ArrayList<Map<String, String>>();
+        Cursor c = getActivity().getContentResolver().query(
+                ContactsContract.CommonDataKinds
+                        .Phone.CONTENT_URI,  // 조회할 컬럼명
+                null, // 조회할 컬럼명
+                null, // 조건 절
+                null, // 조건절의 파라미터
+                null);// 정렬 방향
+
+
+        String str = ""; // 출력할 내용을 저장할 변수
+        c.moveToFirst(); // 커서를 처음위치로 이동시킴
+        do {
+             map = new HashMap<String, String>();
+
+            String name = c.getString
+                    (c.getColumnIndex(ContactsContract
+                            .CommonDataKinds.Phone.DISPLAY_NAME));
+            String phone = c.getString
+                    (c.getColumnIndex(ContactsContract
+                            .CommonDataKinds.Phone.NUMBER));
+
+            map.put("phone", phone);
+            map.put("name", name);
+
+            dataList.add(map);
+            str += "이름 : " + name
+                    +"폰번호 : " + phone + "\n";
+
+        } while (c.moveToNext()); //데이터가 없을 때까지반복
 
         return view;
     }
@@ -54,7 +90,6 @@ public class PeopleFragment extends Fragment {
     // Fragment에 친구 목록을 띄워주기 위한 Adapter
     class PeopleFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-        List<UserModel> userModels;
 
         public PeopleFragmentRecyclerViewAdapter () {
             userModels = new ArrayList<>();
@@ -142,4 +177,7 @@ public class PeopleFragment extends Fragment {
             }
         }
     }
+
+
+
 }

@@ -18,9 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CocoaTalk"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".MainActivity2"
-            android:label="@string/title_activity_main2"></activity>
+<!--        <activity-->
+<!--            android:name=".MainActivity2"-->
+<!--            android:label="@string/title_activity_main2"></activity>-->
         <activity android:name=".chat.MessageActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -32,14 +32,15 @@
         <activity android:name=".SocialActivity" />
         <activity android:name=".FindPwActivity" />
         <activity android:name=".FindIdActivity" />
-        <activity android:name=".RegisterSuccessActivity" />
-        <activity android:name=".RegisterFailActivity" />
+        <activity android:name=".register.RegisterSuccessActivity" />
+        <activity android:name=".register.RegisterFailActivity" />
         <activity android:name=".FindMeActivity" />
-        <activity android:name=".RegisterAgreementActivity" />
+        <activity android:name=".register.RegisterAgreementActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".RegisterPhoneInputActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".register.RegisterActivity" />
+        <activity android:name=".register.RegisterPhoneInputActivity" />
+        <activity android:name=".MainActivity"
+            android:label="@string/title_activity_main"/>
 
         <uses-library
             android:name="org.apache.http.legacy"

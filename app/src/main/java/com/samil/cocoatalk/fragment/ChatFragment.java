@@ -27,6 +27,7 @@ import com.samil.cocoatalk.R;
 import com.samil.cocoatalk.chat.MessageActivity;
 import com.samil.cocoatalk.model.ChatModel;
 import com.samil.cocoatalk.model.UserModel;
+import com.samil.cocoatalk.tool.RecyclerViewEmptySupport;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -49,11 +50,12 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
 
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.chatfragment_recyclerview);
+        RecyclerViewEmptySupport recyclerView = (RecyclerViewEmptySupport) view.findViewById(R.id.chatfragment_recyclerview);
 
 //        if(recyclerView)
         recyclerView.setAdapter(new ChatRecyclerViewAdapter());
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        recyclerView.setEmptyView(view.findViewById(R.id.empty_view));
         return view;
     }
 
@@ -125,26 +127,28 @@ public class ChatFragment extends Fragment {
             // 메시지를 내림차순으로 정렬 후, 마지막 메시지의 키값을 가져온다.
             Map<String, ChatModel.Comment> commentMap = new TreeMap<>(Collections.reverseOrder());
             commentMap.putAll(chatModels.get(position).comments);
-            String lastMessageKey = (String) commentMap.keySet().toArray()[0];
-            customViewHolder.textView_lastMessage.setText(chatModels.get(position).comments.get(lastMessageKey).message);
+            if(!commentMap.isEmpty()){
+                String lastMessageKey = (String) commentMap.keySet().toArray()[0]; // 가져온 commentMap의 마지막 메시지 키값을 String 변수에 대입
+                customViewHolder.textView_lastMessage.setText(chatModels.get(position).comments.get(lastMessageKey).message);
 
-            customViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(v.getContext(), MessageActivity.class);
-                    intent.putExtra("uid_other", user_others.get(position));
+                customViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), MessageActivity.class);
+                        intent.putExtra("uid_other", user_others.get(position));
 
-                    ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fromright,R.anim.toleft);
-                    startActivity(intent, activityOptions.toBundle());
-                }
-            });
+                        ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fromright,R.anim.toleft);
+                        startActivity(intent, activityOptions.toBundle());
+                    }
+                });
+                // 채팅방 목록마다 가장 최근 메시지의 수/발신 시간을 나타내는 timestamp
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                long unixTime = (long)chatModels.get(position).comments.get(lastMessageKey).timestamp;
 
-            // 채팅방 목록마다 가장 최근 메시지의 수/발신 시간을 나타내는 timestamp
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-            long unixTime = (long)chatModels.get(position).comments.get(lastMessageKey).timestamp;
+                Date date = new Date(unixTime);
+                customViewHolder.textView_timestamp.setText(simpleDateFormat.format(date));
+            }
 
-            Date date = new Date(unixTime);
-            customViewHolder.textView_timestamp.setText(simpleDateFormat.format(date));
         }
 
         @Override

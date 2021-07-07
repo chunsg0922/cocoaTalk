@@ -72,7 +72,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // 로그인한 계정의 uid를 받아온다.
-        uid_other = getIntent().getStringExtra("uid"); // 채팅 대상의 uid
+        uid_other = getIntent().getStringExtra("uid_other"); // 채팅 대상의 uid
         profile_other = getIntent().getStringExtra("profile"); // 채팅 대상의 profile
         button = (Button)findViewById(R.id.messageActivty_button);
         edit = (EditText)findViewById(R.id.messageActivity_editText);
@@ -169,7 +169,7 @@ public class MessageActivity extends AppCompatActivity {
 
         // 메시지 목록을 띄우는 메소드
         void getMessageList(){
-            // chatRooms 테이블 중 해당하는 uid를 찾고, 그 하위 테이블의 데이터를 모두 불러온다.
+            // chatRoom 테이블 중 해당하는 uid를 찾고, 그 하위 테이블의 데이터를 모두 불러온다.
             databaseReference = FirebaseDatabase.getInstance().getReference().child("chatRoom").child(chatRoom_uid).child("comments");
             valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -186,7 +186,7 @@ public class MessageActivity extends AppCompatActivity {
                     }
                     if(!comments.get(comments.size() -1).readUsers.containsKey(uid)) {
 
-                    FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoom_uid).child("comments")
+                    FirebaseDatabase.getInstance().getReference().child("chatRoom").child(chatRoom_uid).child("comments")
                             .updateChildren(readUserMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull @NotNull Task<Void> task) {
@@ -219,7 +219,7 @@ public class MessageActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
             MessageViewHolder messageViewHolder = ((MessageViewHolder) holder);
 
-            // 채팅 데이터의 uid가 사용자일 경우
+            // 내가 보낸 메시지
             if (comments.get(position).uid.equals(uid)) {
                 messageViewHolder.textView_message.setText(comments.get(position).message); // 메시지의 텍스트를 표시한다.
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.rightbubble);
@@ -229,16 +229,14 @@ public class MessageActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
                 setReadCounter(position,messageViewHolder.textview_readCounter_left);
             }
-            // 상대방이 메시지를 보내는 경우
+            // 상대방이 보낸 메시지
             else{
-//                if(profile_other.equals("")){
-//                    messageViewHolder.imageView_profile.setImageResource(R.drawable.profile);
-//                } else{
+
                     Glide.with(holder.itemView.getContext())
                             .load(userModel.getProfile())
                             .apply(new RequestOptions().circleCrop())
                             .into(messageViewHolder.imageView_profile); // 상대방의 프로필사진 출력
-//                }
+
                 messageViewHolder.textView_name.setText(userModel.getName()); // 상대방의 이름 출력
                 messageViewHolder.linearLayout.setVisibility(View.VISIBLE);
                 messageViewHolder.textView_message.setBackgroundResource(R.drawable.leftbubble);
@@ -259,7 +257,7 @@ public class MessageActivity extends AppCompatActivity {
             if(peopleCount ==0) {
 
 
-                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoom_uid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("chatRoom").child(chatRoom_uid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Map<String, Boolean> uesrs = (Map<String, Boolean>) dataSnapshot.getValue();

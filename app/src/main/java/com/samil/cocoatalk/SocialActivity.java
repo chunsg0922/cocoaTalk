@@ -79,7 +79,7 @@ public class SocialActivity extends AppCompatActivity {
         Log.e("로그인 멤버 정보 넘기기 : " , "아이디: " + id + ", UID: " + uid );
 
 
-        
+        Cursor d = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null,null);
         Cursor c =  getContentResolver().query(
                 ContactsContract.CommonDataKinds
                         .Phone.CONTENT_URI,  // 조회할 컬럼명
