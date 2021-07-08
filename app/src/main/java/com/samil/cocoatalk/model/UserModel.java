@@ -2,6 +2,7 @@ package com.samil.cocoatalk.model;
 
 public class UserModel {
 
+    public String pushToken;
     private String uid;
     private String id;
     private String name;

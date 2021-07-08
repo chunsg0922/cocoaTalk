@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,35 +56,35 @@ public class PeopleFragment extends Fragment {
         recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());
 
         dataList = new ArrayList<Map<String, String>>();
-        Cursor c = getActivity().getContentResolver().query(
-                ContactsContract.CommonDataKinds
-                        .Phone.CONTENT_URI,  // 조회할 컬럼명
-                null, // 조회할 컬럼명
-                null, // 조건 절
-                null, // 조건절의 파라미터
-                null);// 정렬 방향
-
-
-        String str = ""; // 출력할 내용을 저장할 변수
-        c.moveToFirst(); // 커서를 처음위치로 이동시킴
-        do {
-             map = new HashMap<String, String>();
-
-            String name = c.getString
-                    (c.getColumnIndex(ContactsContract
-                            .CommonDataKinds.Phone.DISPLAY_NAME));
-            String phone = c.getString
-                    (c.getColumnIndex(ContactsContract
-                            .CommonDataKinds.Phone.NUMBER));
-
-            map.put("phone", phone);
-            map.put("name", name);
-
-            dataList.add(map);
-            str += "이름 : " + name
-                    +"폰번호 : " + phone + "\n";
-
-        } while (c.moveToNext()); //데이터가 없을 때까지반복
+//        Cursor c = getActivity().getContentResolver().query(
+//                ContactsContract.CommonDataKinds
+//                        .Phone.CONTENT_URI,  // 조회할 컬럼명
+//                null, // 조회할 컬럼명
+//                null, // 조건 절
+//                null, // 조건절의 파라미터
+//                null);// 정렬 방향
+//
+//
+//        String str = ""; // 출력할 내용을 저장할 변수
+//        c.moveToFirst(); // 커서를 처음위치로 이동시킴
+//        do {
+//             map = new HashMap<String, String>();
+//
+//            String name = c.getString
+//                    (c.getColumnIndex(ContactsContract
+//                            .CommonDataKinds.Phone.DISPLAY_NAME));
+//            String phone = c.getString
+//                    (c.getColumnIndex(ContactsContract
+//                            .CommonDataKinds.Phone.NUMBER));
+//
+//            map.put("phone", phone);
+//            map.put("name", name);
+//
+//            dataList.add(map);
+//            str += "이름 : " + name
+//                    +"폰번호 : " + phone + "\n";
+//
+//        } while (c.moveToNext()); //데이터가 없을 때까지반복
 
         return view;
     }
@@ -129,15 +131,15 @@ public class PeopleFragment extends Fragment {
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
 
-//                Glide.with
-//                        (holder.itemView.getContext())
-//                        .load(userModels.get(position).getProfile())
-//                        .apply(new RequestOptions().circleCrop())
-//                        .into(((CustomViewHolder) holder).imageView);
+                Glide.with
+                        (holder.itemView.getContext())
+                        .load(userModels.get(position).getProfile())
+                        .apply(new RequestOptions().circleCrop())
+                        .into(((CustomViewHolder) holder).imageView);
 
-            Picasso.get()
-                    .load(userModels.get(position).getProfile())
-                    .into(((CustomViewHolder) holder).imageView);
+//            Picasso.get()
+//                    .load(userModels.get(position).getProfile())
+//                    .into(((CustomViewHolder) holder).imageView);
 
             ((CustomViewHolder) holder).nameTextView.setText(userModels.get(position).getName());
            // ((CustomViewHolder) holder).msgTextView.setText(userModels.get(position).getMsg());
@@ -146,7 +148,7 @@ public class PeopleFragment extends Fragment {
                 @Override
                 public void onClick(View view){
                     Intent intent = new Intent(view.getContext(), MessageActivity.class);
-                    intent.putExtra("uid", userModels.get(position).getUid());
+                    intent.putExtra("uid_other", userModels.get(position).getUid());
                     intent.putExtra("profile", userModels.get(position).getProfile());
                     ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(view.getContext(),R.anim.fromright, R.anim.toleft ); // 액티비티 전환 간 애니메이션 적용
                     startActivity(intent, activityOptions.toBundle()); // 애니메이션 적용한 activityOption을 intent와 함께 보낸다.
