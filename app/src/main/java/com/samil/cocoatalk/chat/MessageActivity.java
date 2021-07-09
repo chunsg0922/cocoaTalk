@@ -86,7 +86,7 @@ public class MessageActivity extends AppCompatActivity {
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // 로그인한 계정의 uid를 받아온다.
         uid_other = getIntent().getStringExtra("uid_other"); // 채팅 대상의 uid
       //  profile_other = getIntent().getStringExtra("profile"); // 채팅 대상의 profile
-        button = (Button)findViewById(R.id.messageActivty_button);
+        button = (Button)findViewById(R.id.messageActivity_button);
         edit = (EditText)findViewById(R.id.messageActivity_editText);
         recyclerView = (RecyclerView)findViewById(R.id.messageActivity_recyclerView);
 

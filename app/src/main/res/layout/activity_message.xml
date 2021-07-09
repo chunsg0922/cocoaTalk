@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -7,25 +8,34 @@
         android:id="@+id/messageActivity_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/messageActivty_button"
+        android:layout_above="@+id/messageActivity_button"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <EditText
         android:id="@+id/messageActivity_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/messageActivty_button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/messageActivity_button"
+         />
+
     <Button
-        android:id="@+id/messageActivty_button"
+        android:id="@+id/messageActivity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="전송"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:backgroundTint="@color/color_states_materialbutton"
+        android:foreground="@drawable/send_button"
+        android:foregroundGravity="center_vertical|center_horizontal"
+        android:textSize="8sp" />
+
+
 </RelativeLayout>

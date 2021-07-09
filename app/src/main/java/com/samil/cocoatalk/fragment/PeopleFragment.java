@@ -2,10 +2,11 @@ package com.samil.cocoatalk.fragment;
 
 
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,64 +28,31 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.samil.cocoatalk.R;
-import com.samil.cocoatalk.SocialActivity;
 import com.samil.cocoatalk.chat.MessageActivity;
 import com.samil.cocoatalk.model.UserModel;
-import com.squareup.picasso.Picasso;
 
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PeopleFragment extends Fragment {
 
-    private ArrayList<Map<String, String>> dataList;
-    private HashMap<String, String> map;
     List<UserModel> userModels;
-
+    String all;
     @Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
+        SharedPreferences sharedContact = getActivity().getSharedPreferences("contact", Context.MODE_PRIVATE);
+        all = sharedContact.getString("con", "");
+        Log.e("피플프래그먼트 : " , "넘어온 값 : " + all);
         View view  = inflater.inflate(R.layout.fragment_people, container, false);
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.peoplefragment_recycleview);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new PeopleFragmentRecyclerViewAdapter());
 
-        dataList = new ArrayList<Map<String, String>>();
-//        Cursor c = getActivity().getContentResolver().query(
-//                ContactsContract.CommonDataKinds
-//                        .Phone.CONTENT_URI,  // 조회할 컬럼명
-//                null, // 조회할 컬럼명
-//                null, // 조건 절
-//                null, // 조건절의 파라미터
-//                null);// 정렬 방향
-//
-//
-//        String str = ""; // 출력할 내용을 저장할 변수
-//        c.moveToFirst(); // 커서를 처음위치로 이동시킴
-//        do {
-//             map = new HashMap<String, String>();
-//
-//            String name = c.getString
-//                    (c.getColumnIndex(ContactsContract
-//                            .CommonDataKinds.Phone.DISPLAY_NAME));
-//            String phone = c.getString
-//                    (c.getColumnIndex(ContactsContract
-//                            .CommonDataKinds.Phone.NUMBER));
-//
-//            map.put("phone", phone);
-//            map.put("name", name);
-//
-//            dataList.add(map);
-//            str += "이름 : " + name
-//                    +"폰번호 : " + phone + "\n";
-//
-//        } while (c.moveToNext()); //데이터가 없을 때까지반복
 
         return view;
     }
@@ -106,7 +74,9 @@ public class PeopleFragment extends Fragment {
                             if(userModel.getUid().equals(uid)){ // userModel객체의 uid값이 접속한 계정의 uid와 같을 경우
                                 continue; // 목록에 추가시키는 작업을 하지 않고 그냥 넘어간다.
                             }
-                            userModels.add(userModel);
+                            if(all.contains(userModel.getPhone())) {
+                                userModels.add(userModel);
+                            }
                         }
                         notifyDataSetChanged();
                     }

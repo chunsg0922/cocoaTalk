@@ -23,8 +23,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import static android.content.ContentValues.TAG;
 
 public class SplashActivity extends AppCompatActivity {
-    private final int MY_PERMISSION_REQUEST_READ = 1001;
-    private final int MY_PERMISSION_REQUEST_WRITE = 1001;
+
     private FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     @Override
@@ -35,48 +34,6 @@ public class SplashActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
-        // 연락처 읽기를 위한 권한 설정
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS)) {
-
-                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-                builder.setTitle("안내");
-                builder.setMessage("이 앱은 연락처 사용 권한을 부여하지 않으면 제대로 작동하지 않습니다.");
-                builder.setIcon(android.R.drawable.ic_dialog_info);
-
-                builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(SplashActivity.this, new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSION_REQUEST_READ);
-                    }
-                });
-                androidx.appcompat.app.AlertDialog dialog = builder.create();
-                dialog.show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSION_REQUEST_READ);
-            }
-        }
-
-        // 연락처 쓰기를 위한 권한 설정
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_CONTACTS)){
-                androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-                builder.setTitle("안내");
-                builder.setMessage("이 앱은 연락처 사용 권한을 부여하지 않으면 제대로 작동하지 않습니다.");
-                builder.setIcon(android.R.drawable.ic_dialog_info);
-
-                builder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ActivityCompat.requestPermissions(SplashActivity.this, new String[] {Manifest.permission.WRITE_CONTACTS}, MY_PERMISSION_REQUEST_WRITE);
-                    }
-                });
-                androidx.appcompat.app.AlertDialog dialog = builder.create();
-                dialog.show();
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_CONTACTS}, MY_PERMISSION_REQUEST_WRITE);
-            }
-        }
 
         // Fire
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
