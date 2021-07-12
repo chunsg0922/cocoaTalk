@@ -5,8 +5,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -127,6 +129,11 @@ public class RegisterActivity extends AppCompatActivity {
                                                                 userModel.setUid(uid);
                                                                 userModel.setPhone(memberPhone);
                                                                 userModel.setProfile(memberProfile);
+
+                                                                SharedPreferences sharedPref = getSharedPreferences("save", Context.MODE_PRIVATE); // SharedPreference 객체 생성해준다.
+                                                                SharedPreferences.Editor editor = sharedPref.edit();
+                                                                editor.putString("name", memberName);
+                                                                editor.apply();
 
                                                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                                                 DatabaseReference reference = database.getReference("Users");

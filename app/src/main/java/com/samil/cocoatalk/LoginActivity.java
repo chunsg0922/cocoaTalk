@@ -1,6 +1,7 @@
 package com.samil.cocoatalk;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +28,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.samil.cocoatalk.model.UserModel;
 import com.samil.cocoatalk.register.RegisterAgreementActivity;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,7 +108,8 @@ public class LoginActivity extends AppCompatActivity {
         ActionBar bar = getSupportActionBar();
         bar.hide();
 
-        ////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+        // 연락처 가져오는 메소드
             Cursor c = getContentResolver().query(
                     ContactsContract.CommonDataKinds
                             .Phone.CONTENT_URI,  // 조회할 컬럼명
@@ -112,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
         if( c != null && c.getCount()>0) {
                 c.moveToFirst(); // 커서를 처음위치로 이동시킴
                 do {
-                    // map = new HashMap<String, String>();
 
                     String phone = c.getString
                             (c.getColumnIndex(ContactsContract
@@ -123,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("연락처 : " , all);
         };
 /////////////////////////////////////////////////////////////////
+
         mAuth = FirebaseAuth.getInstance();
 
         EditText editID = (EditText)findViewById(R.id.editID);
@@ -146,7 +156,6 @@ public class LoginActivity extends AppCompatActivity {
                             .setPositiveButton("확인", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-
                                 }
                             });
                     AlertDialog dialog = builder.create();
@@ -166,17 +175,30 @@ public class LoginActivity extends AppCompatActivity {
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         String id = user.getEmail();
                                         String uid = user.getUid();
-                                        Log.e("로그인 이메일 정보 : " , id + ", UID: " + uid);
                                         userModel.setId(id);
                                         userModel.setUid(uid);
+
+                                        FirebaseDatabase.getInstance().getReference().child("Users").child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull @NotNull Task<DataSnapshot> task) {
+                                                if(task.isSuccessful()){
+                                                    userModel = task.getResult().getValue(UserModel.class);
+                                                }
+                                            }
+                                        });
+
 
                                         // SharedPreferences 객체에 로그인 한 아이디를 저장한다.
                                         SharedPreferences sharedPref = getSharedPreferences("save", Context.MODE_PRIVATE); // SharedPreference 객체 생성해준다.
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("id", memberID);
                                         editor.putString("uid", uid);
+                                        editor.putString("msg", userModel.getMsg());
+                                        editor.putString("profile", userModel.getProfile());
+                                        editor.putString("password", memberPassword);
                                         editor.apply();
 
+                                        // 받아온 연락처 데이터를 SharedPreferences 객체에 저장
                                         SharedPreferences sharedContact = getSharedPreferences("contact", MODE_PRIVATE);
                                         SharedPreferences.Editor edit = sharedContact.edit();
                                         edit.putString("con", all);
@@ -217,7 +239,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(LoginActivity.this, FindMeActivity.class);
                 LoginActivity.this.startActivity(intent);
-                finish();
+
             }
         });
 
@@ -228,7 +250,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(LoginActivity.this, RegisterAgreementActivity.class);
                 //Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 LoginActivity.this.startActivity(intent);
-                finish();
+
             }
         });
     }

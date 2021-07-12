@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/chatitem_imageview"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_margin="10dp" />
 
     <LinearLayout
@@ -24,10 +24,9 @@
 
             <TextView
                 android:id="@+id/chatitem_textview_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="채팅방 이름" />
+                android:layout_width="71dp"
+                android:layout_height="31dp"
+                android:layout_marginLeft="10dp" />
 
             <TextView
                 android:id="@+id/chatitem_textview_timestamp"
@@ -46,8 +45,7 @@
             android:id="@+id/chatitem_textview_lastMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="마지막 메시지" />
+            android:layout_margin="10dp" />
 
     </LinearLayout>
 

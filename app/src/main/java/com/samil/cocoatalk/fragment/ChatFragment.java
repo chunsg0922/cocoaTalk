@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -44,6 +45,7 @@ import javax.annotation.Nullable;
 
 public class ChatFragment extends Fragment {
 
+    UserModel userModel;
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm");
     @Nullable
     @Override
@@ -56,6 +58,7 @@ public class ChatFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setEmptyView(view.findViewById(R.id.empty_view));
         return view;
+
     }
 
     // 채팅목록을 리스트 형태로 띄우기 위한 Adapter 클래스
@@ -111,11 +114,13 @@ public class ChatFragment extends Fragment {
             FirebaseDatabase.getInstance().getReference().child("Users").child(uid_other).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull @NotNull DataSnapshot dataSnapshot) {
-                    UserModel userModel = dataSnapshot.getValue(UserModel.class); // DB에서 조회한 결과값을 UserModel의 객체에 저장한다.
+                    userModel = new UserModel();
+                    userModel = dataSnapshot.getValue(UserModel.class); // DB에서 조회한 결과값을 UserModel의 객체에 저장한다.
                     // 프로필 사진을 출력하는 메소드
                     Glide.with(customViewHolder.itemView.getContext())
                             .load(userModel.getProfile())
-                            .apply(new RequestOptions().circleCrop())
+                            .centerCrop()
+                            .apply(new RequestOptions().bitmapTransform(new RoundedCorners(15)))
                             .into(customViewHolder.imageView);
 
                     customViewHolder.textView_title.setText(userModel.getName()); // 이름을 출력하기 위한 메소드
@@ -156,6 +161,8 @@ public class ChatFragment extends Fragment {
                         } else{ // 단독 대화인 경우
                             intent = new Intent(v.getContext(), MessageActivity.class);
                             intent.putExtra("uid_other", user_others.get(position)); // 인텐트에 상대방의 uid
+                            intent.putExtra("name", userModel.getName());
+                            intent.putExtra("profile", userModel.getProfile());
                         }
                         ActivityOptions activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.fromright,R.anim.toleft);
                         startActivity(intent, activityOptions.toBundle());

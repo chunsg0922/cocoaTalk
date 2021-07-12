@@ -54,6 +54,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    implementation 'com.github.bumptech.glide:glide:4.10.0'  // 이미지뷰 활용 라이브러리
+
     // Firebase 사용을 위한 라이브러리
     implementation platform('com.google.firebase:firebase-bom:28.2.0')
     implementation 'com.google.firebase:firebase-analytics'
@@ -61,7 +63,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:21.0.0' // remote-config
     implementation 'com.google.firebase:firebase-auth:21.0.1' // Authentication
     implementation 'com.google.firebase:firebase-firestore:23.0.1' // Firestore
-    implementation 'com.github.bumptech.glide:glide:4.10.0'  // Firebase 이미지 불러오기 위한 라이브러리
     implementation 'com.google.firebase:firebase-storage:20.0.0' // Firebase storage
     implementation 'com.google.firebase:firebase-messaging' // Firebase Cloud Messaging
 

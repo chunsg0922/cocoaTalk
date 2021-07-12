@@ -6,20 +6,24 @@
     android:id="@+id/messageItem_Linearlayout_main">
     <!-- 메시지 레이아웃 -->
     <LinearLayout
+        android:id="@+id/messageItem_Linearlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/messageItem_Linearlayout"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
-        android:id="@+id/messageItem_profile"
-        android:layout_width="50dp"
-        android:layout_height="50dp"/>
+            android:id="@+id/messageItem_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp" />
 
         <!-- 이름, 메시지, 시간표시를 하기위한 레이아웃 -->
 
         <LinearLayout
+            android:id="@+id/me_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -52,18 +56,17 @@
             <TextView
                 android:id="@+id/messageItem_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="이름" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/messageItem_message"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="메시지" />
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/you_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom">

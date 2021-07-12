@@ -9,11 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/messageActivity_button"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentTop="true"
+        android:background="#B2EBF4">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -21,17 +20,16 @@
         android:id="@+id/messageActivity_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/messageActivity_button"
-         />
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/messageActivity_button" />
 
     <Button
         android:id="@+id/messageActivity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
         android:backgroundTint="@color/color_states_materialbutton"
         android:foreground="@drawable/send_button"
         android:foregroundGravity="center_vertical|center_horizontal"
